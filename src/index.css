@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+body {
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(72, 52, 212, 0.15) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(162, 155, 254, 0.1) 0%,
+      transparent 40%
+    ),
+    #0f0f1b;
+  color: #ffffff;
+  background-color: #0f0f1b;
+  min-height: 100vh;
+}
+
+.signUpBg {
+  background: linear-gradient(135deg, #a071a208 0%, #8e6bab 100%);
+}
