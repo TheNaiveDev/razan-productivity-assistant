@@ -1,6 +1,12 @@
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+  const navigate = useNavigate();
+  function goToRegister() {
+    navigate("/getstarted");
+  }
+
   return (
     <>
       <div className="pt-40 px-8 flex flex-col gap-8 items-center font-['Playfair_Display']">
@@ -16,6 +22,7 @@ export default function Hero() {
             text="GET STARTED FOR FREE"
             textClr="text-[#1a1a2e]"
             bgClr="bg-[#c3bef0]"
+            clicked={() => goToRegister()}
           />
           <Button
             text="EXPLORE FEATURES"

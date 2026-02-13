@@ -1,9 +1,53 @@
+import { useState } from "react";
 import Button from "../components/Button";
+import { supabase } from "../supabaseClient";
 
 export default function GetStarted() {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  // sign up function
+  async function signUp(email: string, password: string, name: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name },
+      },
+    });
+    if (error) {
+      console.error("Error signing up:", error.message);
+    } else {
+      console.log("User signed up successfully:", data);
+    }
+  }
+
+  // sign in function
+  async function signIn(email: string, password: string) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) {
+      console.error("there was an error loggingin in: ", error);
+    } else {
+      console.log("Log in successful", data);
+    }
+  }
+
+  // handle form submission
+  const handleSubmit = () => {
+    if (isSignUp) {
+      signUp(email, password, name);
+    } else if (!isSignUp) {
+      signIn(email, password);
+    }
+  };
   return (
-    <div className="h-screen w-screen flex gap-20">
-      <div className="w-1/2 flex flex-col items-start justify-between py-12 gap-10 px-20 signUpBg">
+    <div className="h-screen w-screen flex max-sm:flex-col items-center justify-center">
+      <div className="flex-1 h-full hidden lg:flex flex-col items-start justify-between py-12 gap-10 pl-20 signUpBg">
         <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -38,27 +82,39 @@ export default function GetStarted() {
           10K+ STUDENTS FOCUSING WITH RAZAN (Not yet but I need something here)
         </div>
       </div>
-      <div className="w-1/2 flex items-center justify-center">
+      <div className="flex-1 h-full flex items-center justify-center">
         <form
-          className="w-[50%] bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 flex flex-col gap-8"
+          className="w-[95%] xl:w-[70%] 2xl:[50%] bg-white/5 backdrop-blur-sm rounded-2xl px-8 py-12 border border-white/10 flex flex-col gap-8"
           action="#"
+          onSubmit={() => {
+            handleSubmit();
+          }}
         >
           <div>
             <span className="text-3xl font-light font-[Playfair_Display]">
-              Create Account
+              {isSignUp ? "Create Account" : "Welcome Back"}
             </span>
-            <p>Enter your details to begin your journey.</p>
+            <p>
+              {isSignUp
+                ? "Enter your details to begin your journey."
+                : "Sign in to continue your journey."}
+            </p>
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="text-white/60 text-sm font-[Lexend] tracking-wider font-light">
-              FIRST NAME
-            </label>
-            <input
-              type="text"
-              placeholder="Denzel"
-              className="bg-white/5 px-2 py-3 rounded-2xl outline-none border border-[#ffffff10] font-[Lexend] text-white/70"
-            />
-          </div>
+          {isSignUp && (
+            <div className="flex flex-col gap-2">
+              <label className="text-white/60 text-sm font-[Lexend] tracking-wider font-light">
+                FIRST NAME
+              </label>
+              <input
+                type="text"
+                placeholder="Denzel"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="bg-white/5 px-2 py-3 rounded-2xl outline-none border border-[#ffffff10] font-[Lexend] text-white/70"
+              />
+            </div>
+          )}
           <div className="flex flex-col gap-2">
             <label className="text-white/60 text-sm font-[Lexend] tracking-wider font-light">
               EMAIL ADDRESS
@@ -66,6 +122,9 @@ export default function GetStarted() {
             <input
               type="email"
               placeholder="email@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               className="bg-white/5 px-2 py-3 rounded-2xl outline-none border border-[#ffffff10] font-[Lexend] text-white/70"
             />
           </div>
@@ -76,14 +135,26 @@ export default function GetStarted() {
             <input
               type="password"
               placeholder="••••••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
               className="bg-white/5 px-2 py-3 rounded-2xl outline-none border border-[#ffffff10] font-[Lexend] text-white/70"
             />
           </div>
           <Button
-            text="REGISTER"
+            text={isSignUp ? "REGISTER" : "SIGN IN"}
             textClr="text-[#1a1a2e]"
             bgClr="bg-[#c3bef0]"
           />
+          <p className="text-center text-white/40 font-light leading-relaxed font-[Lexend]">
+            Don't have an account yet?{" "}
+            <span
+              className="text-white/70 cursor-pointer"
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp ? "Sign in now" : "Sign up now"}
+            </span>
+          </p>
         </form>
       </div>
     </div>
