@@ -1,14 +1,7 @@
 @import "tailwindcss";
 
 body {
-  background:
-    radial-gradient(circle at top right, rgba(109, 40, 217, 0.2), transparent),
-    radial-gradient(
-      circle at bottom left,
-      rgba(19, 91, 236, 0.15),
-      transparent
-    ),
-    #0a0b1e;
+  background: linear-gradient(135deg, #0a0a14 0%, #150e26 50%, #1a0b2e 100%);
   color: #ffffff;
   background-color: #0f0f1b;
   min-height: 100vh;
@@ -19,8 +12,8 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }

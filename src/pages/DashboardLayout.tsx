@@ -1,12 +1,14 @@
 import {
-  RiDashboardFill,
-  RiTimerFill,
+  RiDashboardLine,
   RiBookletFill,
   RiStackFill,
   RiUserFill,
   RiSettings2Fill,
+  RiMenuUnfoldFill,
 } from "@remixicon/react";
 import { NavLink, Outlet } from "react-router-dom";
+import { useState } from "react";
+import CircleInfo from "../components/CircleInfo";
 
 type SidebarLink = {
   icon: React.ElementType;
@@ -14,14 +16,21 @@ type SidebarLink = {
 };
 
 export default function DashboardLayout() {
+  const [isHidden, setIsHidden] = useState<string>("max-sm:hidden");
+  const [position, setPosition] = useState<string>("left-4");
+
+  const handleSidebar = () => {
+    setIsHidden((prev) =>
+      prev === "max-sm:hidden" ? "max-sm:block" : "max-sm:hidden",
+    );
+
+    setPosition((prev) => (prev === "left-4" ? "left-24" : "left-4"));
+  };
+
   const linkIcons: SidebarLink[] = [
     {
-      icon: RiDashboardFill,
+      icon: RiDashboardLine,
       path: "",
-    },
-    {
-      icon: RiTimerFill,
-      path: "focus",
     },
     {
       icon: RiBookletFill,
@@ -42,7 +51,9 @@ export default function DashboardLayout() {
   ];
   return (
     <div className="flex h-screen w-screen gap-4">
-      <div className="p-4 bg-[rgba(255,255,255,0.05)] border-r border-r-white/10 backdrop-blur-30 overflow-hidden absolute h-full">
+      <div
+        className={`p-4 glass border-r border-r-white/10 backdrop-blur-30 overflow-hidden absolute h-full ${isHidden}`}
+      >
         <div className="p-3 rounded-full bg-blue-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -78,6 +89,13 @@ export default function DashboardLayout() {
             </NavLink>
           ))}
         </div>
+      </div>
+      <div className={`absolute top-5 ${position} sm:hidden`}>
+        <CircleInfo
+          Icon={RiMenuUnfoldFill}
+          color="white"
+          clicked={handleSidebar}
+        />
       </div>
       {/* outlet below */}
       <div>
